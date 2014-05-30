@@ -1,5 +1,6 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 
 #include <iostream> 
 
@@ -14,16 +15,13 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
+	
 	IplImage* image;
 	namedWindow("Display window", WINDOW_AUTOSIZE);
-	for (int i = 1; i < 10; i++)
-	{
-		image = generatePattern(i, WIDTH, HEIGHT);
-		cvShowImage("Display window", image); // Show our image inside it.
-		fflush(stdin);
-		waitKey(0);
-	}
-
+	int i = 3;
+	image = generatePattern(i, WIDTH, HEIGHT);
+	cvShowImage("Display window", image); // Show our image inside it.
+	waitKey(0); 
 	/*
 	CvCapture* capture = cvCaptureFromCAM(CV_CAP_ANY);
 	if (capture == NULL){
@@ -85,7 +83,19 @@ int main(int argc, char** argv)
 	destroyWindow("Display window");
 	waitKey(0); // Wait for a keystroke in the window
 	Mat img=imread("./cap1.jpg", 1);
+	Mat img2;
 	namedWindow("Display window", WINDOW_AUTOSIZE);
 	imshow("Display window", img);
+	waitKey(0);
+	cvtColor(img, img2, CV_BGR2Lab, 0);
+	imshow("Display window", img2); 
+	Mat imgBinaryRed,imgBinaryBlue,imgBinaryGreen;
+	inRange(img2, Scalar(0*255/100, -117+128, -100+128), Scalar(100*255/100, 10+128, -10+128), imgBinaryBlue);
+	inRange(img2, Scalar(0 * 255 / 100, 40 + 128, -127 + 128), Scalar(100 * 255 / 100, 127 + 128, 127 + 128), imgBinaryRed);
+	waitKey(0);
+	imshow("Display window", imgBinaryBlue);
+	waitKey(0);
+	imshow("Display window", imgBinaryRed);
+	waitKey(0);
 	return 0;
 }
