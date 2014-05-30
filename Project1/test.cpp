@@ -3,7 +3,7 @@
 
 #include <iostream> 
 
-#include "generatePattern.cpp"
+#include "generatePattern.hpp"
 
 
 #define WIDTH 1600
@@ -14,10 +14,15 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-
-	IplImage* image = generatePattern(3, WIDTH, HEIGHT);
-	namedWindow("Display window", WINDOW_AUTOSIZE); // Create a window for display.
-	cvShowImage("Display window", image); // Show our image inside it.
+	IplImage* image;
+	namedWindow("Display window", WINDOW_AUTOSIZE);
+	for (int i = 1; i < 10; i++)
+	{
+		image = generatePattern(i, WIDTH, HEIGHT);
+		cvShowImage("Display window", image); // Show our image inside it.
+		fflush(stdin);
+		waitKey(0);
+	}
 
 	/*
 	CvCapture* capture = cvCaptureFromCAM(CV_CAP_ANY);
@@ -77,6 +82,10 @@ int main(int argc, char** argv)
 		}
 	}
 	*/
+	destroyWindow("Display window");
 	waitKey(0); // Wait for a keystroke in the window
+	Mat img=imread("./cap1.jpg", 1);
+	namedWindow("Display window", WINDOW_AUTOSIZE);
+	imshow("Display window", img);
 	return 0;
 }
