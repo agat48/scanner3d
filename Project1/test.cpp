@@ -19,9 +19,14 @@ int main(int argc, char** argv)
 	IplImage* image;
 	namedWindow("Display window", WINDOW_AUTOSIZE);
 	int i = 3;
-	image = generatePattern(i, WIDTH, HEIGHT);
-	cvShowImage("Display window", image); // Show our image inside it.
-	waitKey(0); 
+	GRAY_STR* gr = generateGray(WIDTH);
+	for (int i = 1; i < 12; i++)
+	{
+		image = generatePatternGray(i, WIDTH, HEIGHT, gr);
+		cvShowImage("Display window", image); // Show our image inside it.
+		waitKey(0);
+	}
+	
 	/*
 	CvCapture* capture = cvCaptureFromCAM(CV_CAP_ANY);
 	if (capture == NULL){
