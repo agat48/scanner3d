@@ -3,104 +3,51 @@
 #include <opencv2/imgproc/imgproc.hpp>
 
 #include <iostream> 
+//#include "generatePattern.hpp"
+#include "handleCapture.hpp"
+#include "calculationMath.hpp"
 
-#include "generatePattern.hpp"
 
-
-#define WIDTH 1600
-#define HEIGHT 1200
+#define WIDTH_CONST 1600
+#define HEIGHT_CONST 1200
 using namespace cv;
 using namespace std;
 
+int WIDTH = WIDTH_CONST;
+int HEIGHT = HEIGHT_CONST;
 
 int main(int argc, char** argv)
 {
-	
-	IplImage* image;
-	namedWindow("Display window", WINDOW_AUTOSIZE);
-	int i = 3;
-	GRAY_STR* gr = generateGray(WIDTH);
-	for (int i = 1; i < 12; i++)
-	{
-		image = generatePatternGray(i, WIDTH, HEIGHT, gr);
-		cvShowImage("Display window", image); // Show our image inside it.
-		waitKey(0);
-	}
-	
+//	capture();
+	//	*/
+	MatrixObj mat(4, 4);
+	mat.writeMatrix();
+	RMatrix rmatr;
+	rmatr.writeMatrix();
+	RMatrix rmatr2(R_ROLL,0.4);
+	rmatr.setVal(4, 3, 3);
+	rmatr.setVal(2, 0, 0);
+	MatrixObj multip = rmatr.multiplMatrix(rmatr2);
+	multip.writeMatrix();
+	system("pause");
+
 	/*
-	CvCapture* capture = cvCaptureFromCAM(CV_CAP_ANY);
-	if (capture == NULL){
-		printf("ERROR: No camera was detected by OpenCV!\n");
-		printf("Press any key to exit.\n");
-		waitKey(0);
-		return -1;
-	}
-	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, WIDTH);
-	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, HEIGHT);
-
-	IplImage* cam_frame = cvQueryFrame2(capture, &sl_params);
-	if (cam_frame == NULL){
-		printf("ERROR: No frame was available!\n");
-		printf("Press any key to exit.\n");
-		waitkey(0);
-		return -1;
-	}
-	*/
-	/*
-	VideoCapture cap(0); // open the video camera no. 0
-
-	if (!cap.isOpened())  // if not success, exit program
-	{
-		cout << "Cannot open the video cam" << endl;
-		return -1;
-	}
-
-	double dWidth = cap.get(CV_CAP_PROP_FRAME_WIDTH); //get the width of frames of the video
-	double dHeight = cap.get(CV_CAP_PROP_FRAME_HEIGHT); //get the height of frames of the video
-
-	cout << "Frame size : " << dWidth << " x " << dHeight << endl;
-	namedWindow("MyVideo", CV_WINDOW_AUTOSIZE); //create a window called "MyVideo"
-	
-//	while (1)
-	{
-		Mat frame;
-		fflush(stdin);
-		waitKey(0);
-
-		bool bSuccess = cap.read(frame); // read a new frame from video
-		bSuccess = cap.read(frame);
-
-		if (!bSuccess) //if not success, break loop
-		{
-			cout << "Cannot read a frame from video stream" << endl;
-	//		break;
-		}
-
-		imshow("MyVideo", frame); //show the frame in "MyVideo" window
-		imwrite("./cap2.jpg", frame);
-		if (waitKey(30) == 27) //wait for 'esc' key press for 30ms. If 'esc' key is pressed, break loop
-		{
-			cout << "esc key is pressed by user" << endl;
-	//		break;
+	Mat sample(255, 255, CV_8UC3);
+	Mat sample2(sample);
+	for (int i = 0; i < sample.rows; i++) {
+		for (int j = 0; j < sample.cols; j++) {
+			sample.at<Vec3b>(i, j)[0] = 50;
+			sample.at<Vec3b>(i, j)[1] = i;
+			sample.at<Vec3b>(i, j)[2] = j;
 		}
 	}
-	*/
-	destroyWindow("Display window");
-	waitKey(0); // Wait for a keystroke in the window
-	Mat img=imread("./cap1.jpg", 1);
-	Mat img2;
-	namedWindow("Display window", WINDOW_AUTOSIZE);
-	imshow("Display window", img);
-	waitKey(0);
-	cvtColor(img, img2, CV_BGR2Lab, 0);
-	imshow("Display window", img2); 
-	Mat imgBinaryRed,imgBinaryBlue,imgBinaryGreen;
-	inRange(img2, Scalar(0*255/100, -117+128, -100+128), Scalar(100*255/100, 10+128, -10+128), imgBinaryBlue);
-	inRange(img2, Scalar(0 * 255 / 100, 40 + 128, -127 + 128), Scalar(100 * 255 / 100, 127 + 128, 127 + 128), imgBinaryRed);
-	waitKey(0);
-	imshow("Display window", imgBinaryBlue);
-	waitKey(0);
-	imshow("Display window", imgBinaryRed);
-	waitKey(0);
+	namedWindow("Pattern window", WINDOW_AUTOSIZE);
+	cvtColor(sample, sample2, CV_Lab2BGR, 0);
+	imshow("Display window", sample2);
+	waitKey(0); */
+//	GRAY_STR** assignedValues = assignToPlane(11, dWidth, dHeight);
+
 	return 0;
+
+
 }

@@ -126,11 +126,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="calculationMath.cpp" />
     <ClCompile Include="generatePattern.cpp" />
+    <ClCompile Include="handleCapture.cpp" />
+    <ClCompile Include="structures.cpp" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="calculationMath.hpp" />
     <ClInclude Include="generatePattern.hpp" />
+    <ClInclude Include="handleCapture.hpp" />
+    <ClInclude Include="structures.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

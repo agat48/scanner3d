@@ -21,9 +21,27 @@
     <ClCompile Include="generatePattern.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="handleCapture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="calculationMath.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="structures.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="generatePattern.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="handleCapture.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="calculationMath.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="structures.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
