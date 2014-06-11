@@ -7,23 +7,20 @@
 #include <cmath>
 #include <Windows.h>
 
+#include "generatePattern.hpp"
+
 extern int WIDTH;
 extern int HEIGHT;
 
-
-namespace pat
-{
-	struct GRAY_STR {
-		int values[11];
-	};
-}
 
 using namespace pat;
 using namespace std;
 using namespace cv;
 
+Mat createROI();
+int grayToInt(GRAY_STR gray, int len);
 
-Mat* binarizeChannels(Mat img)
+Mat* binarizeChannels(Mat img, Mat roi)
 {
 	int aParams[3][2], bParams[3][2];
 	aParams[0][0] = 22;
@@ -39,11 +36,20 @@ Mat* binarizeChannels(Mat img)
 	bParams[1][1] = 127;
 	bParams[2][0] = -127;
 	bParams[2][1] = -5;
-
 	Mat* imgBin = new Mat[3];
-	inRange(img, Scalar(0 * 255 / 100, aParams[2][0] + 128, bParams[2][0] + 128), Scalar(100 * 255 / 100, aParams[2][1] + 128, bParams[2][1] + 128), imgBin[0]);
-	inRange(img, Scalar(0 * 255 / 100, aParams[1][0] + 128, bParams[1][0] + 128), Scalar(100 * 255 / 100, aParams[1][1] + 128, bParams[1][1] + 128), imgBin[1]);
-	inRange(img, Scalar(0 * 255 / 100, aParams[0][0] + 128, bParams[0][0] + 128), Scalar(100 * 255 / 100, aParams[0][1] + 128, bParams[0][1] + 128), imgBin[2]);
+	Mat img2;
+	Mat imgGreen;
+	Mat imgRef;
+	cvtColor(img, img2, CV_BGR2Lab, 0);
+	img2.copyTo(imgRef, roi);
+	img.copyTo(imgGreen, roi);
+	inRange(imgRef, Scalar(0 * 255 / 100, aParams[2][0] + 128, bParams[2][0] + 128), Scalar(100 * 255 / 100, aParams[2][1] + 128, bParams[2][1] + 128), imgBin[0]);
+//	inRange(imgGreen, Scalar(180,180,180), Scalar(255,255,255), imgBin[1]);
+//	inRange(imgRef, Scalar(0 * 255 / 100, aParams[1][0] + 128, bParams[1][0] + 128), Scalar(100 * 255 / 100, aParams[1][1] + 128, bParams[1][1] + 128), imgBin[1]);
+	inRange(imgRef, Scalar(0 * 255 / 100, aParams[0][0] + 128, bParams[0][0] + 128), Scalar(100 * 255 / 100, aParams[0][1] + 128, bParams[0][1] + 128), imgBin[2]);
+	//addWeighted(imgBin[0],1, imgBin[2],1,0,imgGreen);
+	imgBin[1] = roi-(imgBin[0] + imgBin[2]);
+//	imgGreen.copyTo(imgBin[1], roi);
 	return imgBin;
 }
 
@@ -132,28 +138,38 @@ GRAY_STR** assignToPlane(int numberOfPhotos) {
 	Mat img;
 	Mat img2;
 	Mat* imgBin;
+	Mat roi = createROI();
+	Mat z;
 	uchar temp;
 	int val;
+	namedWindow("disp", WINDOW_AUTOSIZE);
 	for (int k = 0; k < numberOfPhotos; k++)
 	{
 		sprintf(filename, "./images/captured/cap%d.jpg", k+1);
-		img = imread(filename, 1);
-		cvtColor(img, img2, CV_BGR2Lab, 0);
-		imgBin = binarizeChannels(img2);
+		img = imread(filename, CV_LOAD_IMAGE_COLOR);
+		imgBin = binarizeChannels(img,roi);
+		imshow("disp", imgBin[0]);
+		waitKey(0);
+		imshow("disp", imgBin[1]);
+		waitKey(0);
+		imshow("disp", imgBin[2]);
+		waitKey(0);
+		imshow("disp", img);
+		waitKey(0);
 		//check if pixel is red/green/blue/other
-		for (int i = 0; i < img2.cols; i++) {
-			for (int j = 0; j < img2.rows; j++) {
-				temp = imgBin[2].at<Vec3b>(j, i)[0];
+		for (int i = 0; i < img.rows; i++) {
+			for (int j = 0; j < img.cols; j++) {
+				temp = imgBin[2].at<uchar>(i,j);
 				if (temp == 255) {
 					val = 0;
 				}
 				else {
-					temp = imgBin[0].at<Vec3b>(i, j)[0];
+					temp = imgBin[0].at<uchar>(i,j);
 					if (temp == 255) {
 						val = 1;
 					}
 					else {
-						temp = imgBin[1].at<Vec3b>(i, j)[0];
+						temp = imgBin[1].at<uchar>(i,j);
 						if (temp == 255) {
 							val = 2;
 						}
@@ -164,6 +180,8 @@ GRAY_STR** assignToPlane(int numberOfPhotos) {
 			}
 		}
 	}
+	destroyWindow("disp");
+	delete[]imgBin;
 	return tab;
 }
 
@@ -173,4 +191,60 @@ void checkAndCreateDir(char filename1[], char filename2[])
 	CreateDirectoryA(filename2, NULL);
 	cout << GetLastError() << endl;
 }
+Mat createROI() {
+	char filename[50];
+	Mat img;
+	Mat img2;
+	Mat imgBin;
+	sprintf(filename, "./images/captured/cap%d.jpg", 0);
+	img = imread(filename, 1);
+	cvtColor(img, img2, CV_BGR2Lab, 0);
+	namedWindow("Disp", CV_WINDOW_AUTOSIZE);
+	inRange(img2, Scalar(50 * 255 / 100, -127 + 128, -127 + 128), Scalar(100 * 255 / 100, 127 + 128, 127 + 128), imgBin);
+	imshow("Disp", img2);
+	waitKey(0);
+	imshow("Disp", imgBin);
+	waitKey(0);
+	destroyWindow("Disp");
+	return imgBin;
+}
 
+int findColumn(GRAY_STR gray) {
+	int res=0;
+	int* vals = gray.values;
+	int i = 0;
+	while (vals[i] >= 0 && vals[i] < 2 && i < 11) {
+		i++;
+	}
+	if (i == 0 && vals[i] != 2){
+		return -1;
+	}
+	res = grayToInt(gray, i);
+	if (res < 0) {
+		res = 0;
+	}
+	i = 11 - i;
+	res = (int)(pow(2, i - 1) + pow(2, i)*res);
+	return res;
+}
+
+int grayToInt(GRAY_STR gray, int len) {
+	if (len == 0) {
+		return -1;
+	}
+	else {
+		int* vals = gray.values;
+		int* bin = new int[len];
+		bin[0] = vals[0];
+		for (int i = 1; i < len; i++) {
+			bin[i] = (bin[i - 1] + vals[i]) % 2;
+		}
+		int res = 0;
+		for (int i = 0; i < len; i++) {
+			res = res + bin[i] * (int)pow(2, len - i - 1);
+		}
+		delete[]bin;
+		return res;
+	}
+	
+}
