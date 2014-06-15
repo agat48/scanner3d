@@ -73,6 +73,7 @@ double* calculateCoordinates(cameraRay camR, projectorPlane projPl, MatrixObj* Q
 	coords[0] = camR.getCoords()[0];
 	coords[1] = camR.getCoords()[1];
 	coords[2] = -planeCoords[3] / (planeCoords[0] * camR.getParams()[0] + planeCoords[1] * camR.getParams()[1] + planeCoords[2]);
+	delete[]planeCoords;
 	return coords;
 }
 
@@ -88,8 +89,8 @@ cameraRay** generateRayCoords() {
 	}
 	for (int i = 0; i < HEIGHT; i++) {
 		for (int j = 0; j < WIDTH; j++) {
-			rays[i][j].setParams(dx*((2 * j) / (WIDTH - 1) - 1), dy*((2 * i) / (HEIGHT - 1) - 1));
-			rays[i][j].setCoords(i, j);
+			rays[i][j].setParams((double)dx*((2 * j) / (WIDTH - 1) - 1), (double)dy*((2 * i) / (HEIGHT - 1) - 1));
+			rays[i][j].setCoords(j, i);
 		}
 	}
 	return rays;
@@ -100,20 +101,23 @@ projectorPlane* generatePlaneCoords() {
 	double c = tan(toRadians(gamma / 2));
 	planes = new projectorPlane[WIDTH];
 	for (int i = 0; i < WIDTH; i++) {
-		planes[i].setParams(i / (WIDTH - 1) - 1, 0, c, 0);
+		planes[i].setParams((double)i / (WIDTH - 1) - 1, 0, c, 0);
 	}
 	return planes;
 }
 
 double* switchCoordsToLocal(projectorPlane planeLocal, MatrixObj* Q) {
 	double* vals=new double[4];
-	MatrixObj *planeCoords, planeLocalCoords(planeLocal.getParams(), 4);
-	planeLocalCoords.setName("planeLocalCoords");
-	planeCoords = Q->multiplMatrix(&planeLocalCoords);
+	MatrixObj *planeCoords, *planeLocalCoords;
+	planeLocalCoords = new MatrixObj(planeLocal.getParams(), 4);
+	planeLocalCoords->setName("planeLocalCoords");
+	planeCoords = Q->multiplMatrix(planeLocalCoords);
 	planeCoords->setName("planeCoords");
 	for (int i = 0; i < 4; i++) {
 		vals[i] = planeCoords->getVal(i, 0);
 	}
+	delete planeLocalCoords;
+	delete planeCoords;
 	return vals;
 
 }
