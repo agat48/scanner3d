@@ -60,11 +60,11 @@ int main(int argc, char** argv)
 	double ***coordVals;
 	int ROIwidth, ROIheight;
 	ROIwidth = ROI_RIGHT - ROI_LEFT+1;
-	ROIheight = ROI_BOTTOM - ROI_TOP + 1;
-	coordVals = new double**[ROIheight];
-	for (int i = 0; i < ROIheight; i++) {
-		coordVals[i] = new double*[ROIwidth];
-		for (int j = 0; j < ROIwidth; j++) {
+	ROIheight = ROI_BOTTOM - ROI_TOP+1;
+	coordVals = new double**[HEIGHT];
+	for (int i = 0; i < HEIGHT; i++) {
+		coordVals[i] = new double*[WIDTH];
+		for (int j = 0; j < WIDTH; j++) {
 			coordVals[i][j] = new double[3];
 		}
 	}
