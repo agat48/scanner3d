@@ -70,7 +70,9 @@
     <Import Project="..\..\..\..\..\Inżynierka\Kodzenie\test\OpenCV_Release.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(PCL_DIR)\3rdParty\VTK\include;$(PCL_DIR)\3rdParty\Qhull\include;$(PCL_DIR)\3rdParty\FLANN\include;$(PCL_DIR)\3rdParty\Eigen\include;$(PCL_DIR)\3rdParty\Boost\include;$(PCL_DIR)\include\pcl-1.6;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -89,12 +91,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(OPENCV_DIR)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PCL_DIR)\3rdParty\VTK\include;$(PCL_DIR)\3rdParty\Qhull\include;$(PCL_DIR)\3rdParty\FLANN\include;$(PCL_DIR)\3rdParty\Eigen\include;$(PCL_DIR)\3rdParty\Boost\include;$(PCL_DIR)\include\pcl-1.6;$(OPENCV_DIR)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(OPENCV_DIR)\x64\vc12\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opencv_calib3d249d.lib;opencv_contrib249d.lib;opencv_core249d.lib;opencv_features2d249d.lib;opencv_flann249d.lib;opencv_gpu249d.lib;opencv_highgui249d.lib;opencv_imgproc249d.lib;opencv_legacy249d.lib;opencv_ml249d.lib;opencv_nonfree249d.lib;opencv_objdetect249d.lib;opencv_ocl249d.lib;opencv_photo249d.lib;opencv_stitching249d.lib;opencv_superres249d.lib;opencv_ts249d.lib;opencv_video249d.lib;opencv_videostab249d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(PCL_DIR)\3rdParty\Boost\lib;$(PCL_DIR)\3rdParty\3rdParty\VTK\lib;$(PCL_DIR)\3rdParty\3rdParty\Qhull\lib;$(PCL_DIR)\3rdParty\FLANN\lib;$(PCL_DIR)\include\pcl-1.6;$(OPENCV_DIR)\x64\vc12\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_calib3d249d.lib;opencv_contrib249d.lib;opencv_core249d.lib;opencv_features2d249d.lib;opencv_flann249d.lib;opencv_gpu249d.lib;opencv_highgui249d.lib;opencv_imgproc249d.lib;opencv_legacy249d.lib;opencv_ml249d.lib;opencv_nonfree249d.lib;opencv_objdetect249d.lib;opencv_ocl249d.lib;opencv_photo249d.lib;opencv_stitching249d.lib;opencv_superres249d.lib;opencv_ts249d.lib;opencv_video249d.lib;opencv_videostab249d.lib;pcl_common_debug.lib;pcl_io_debug.lib;pcl_visualization_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -129,6 +131,8 @@
     <ClCompile Include="calculationMath.cpp" />
     <ClCompile Include="generatePattern.cpp" />
     <ClCompile Include="handleCapture.cpp" />
+    <ClCompile Include="PCLtest.cpp" />
+    <ClCompile Include="PCLtest2.cpp" />
     <ClCompile Include="structures.cpp" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>
