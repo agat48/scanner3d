@@ -9,8 +9,9 @@
 
 #include "generatePattern.hpp"
 
-extern int WIDTH;
-extern int HEIGHT;
+
+extern int C_WIDTH;
+extern int C_HEIGHT;
 
 int ROI_LEFT=0;
 int ROI_TOP=0;
@@ -59,7 +60,7 @@ Mat* binarizeChannels(Mat img, Mat roi)
 
 IplImage* generatePatternByDivision(int index) {
 
-	IplImage* image = cvCreateImage(cvSize(WIDTH, HEIGHT), IPL_DEPTH_8U, 3);
+	IplImage* image = cvCreateImage(cvSize(C_WIDTH, C_HEIGHT), IPL_DEPTH_8U, 3);
 	cvSet(image, cvScalar(0, 0, 0), 0);
 	int i = index;
 	int regionWidth = (int)(image->width / pow(2, i));
@@ -79,7 +80,7 @@ IplImage* generatePatternByDivision(int index) {
 	return image;
 }
 IplImage* generatePatternGray(int index, GRAY_STR* tab) {
-	IplImage* image = cvCreateImage(cvSize(WIDTH, HEIGHT), IPL_DEPTH_8U, 3);
+	IplImage* image = cvCreateImage(cvSize(C_WIDTH, C_HEIGHT), IPL_DEPTH_8U, 3);
 	cvSet(image, cvScalar(0, 0, 0), 0);
 	int i = index;
 	int n;
@@ -111,9 +112,9 @@ IplImage* generatePatternGray(int index, GRAY_STR* tab) {
 	return image;
 }
 GRAY_STR* generateGray() {
-	GRAY_STR* table=new GRAY_STR[WIDTH];
+	GRAY_STR* table=new GRAY_STR[C_WIDTH];
 	int temp;
-	for (int i = 0; i < WIDTH; i++)
+	for (int i = 0; i < C_WIDTH; i++)
 	{
 		temp = i;
 		GRAY_STR temptab;
@@ -133,10 +134,10 @@ GRAY_STR* generateGray() {
 
 GRAY_STR** assignToPlane(int numberOfPhotos) {
 	GRAY_STR** tab;
-	tab = new GRAY_STR*[HEIGHT];
-	for (int i = 0; i < HEIGHT; i++)
+	tab = new GRAY_STR*[C_HEIGHT];
+	for (int i = 0; i < C_HEIGHT; i++)
 	{
-		tab[i] = new GRAY_STR[WIDTH];
+		tab[i] = new GRAY_STR[C_WIDTH];
 	}
 	char filename[50];
 	Mat img;

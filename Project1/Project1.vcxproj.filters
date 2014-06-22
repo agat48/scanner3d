@@ -30,12 +30,6 @@
     <ClCompile Include="structures.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PCLtest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PCLtest2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="generatePattern.hpp">

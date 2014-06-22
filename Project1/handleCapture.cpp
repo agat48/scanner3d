@@ -1,8 +1,8 @@
 #include "generatePattern.hpp"
 #include <iostream>
 
-extern int WIDTH;
-extern int HEIGHT;
+extern int C_WIDTH;
+extern int C_HEIGHT;
 
 using namespace std;
 using namespace pat;
@@ -20,12 +20,12 @@ int capture() {
 		cout << "Cannot open the video cam" << endl;
 		return -1;
 	}
-	cap.set(CV_CAP_PROP_FRAME_WIDTH, WIDTH);
-	cap.set(CV_CAP_PROP_FRAME_HEIGHT, HEIGHT);
+	cap.set(CV_CAP_PROP_FRAME_WIDTH, C_WIDTH);
+	cap.set(CV_CAP_PROP_FRAME_HEIGHT, C_HEIGHT);
 	namedWindow("MyVideo", CV_WINDOW_AUTOSIZE); //create a window called "MyVideo
 	checkAndCreateDir("./images", "/images/captured");
 
-	pattern = cvCreateImage(cvSize(WIDTH, HEIGHT), IPL_DEPTH_8U, 3); //generatePatternGray(i, WIDTH, HEIGHT, gr);
+	pattern = cvCreateImage(cvSize(C_WIDTH, C_HEIGHT), IPL_DEPTH_8U, 3); //generatePatternGray(i, C_WIDTH, HEIGHT, gr);
 	cvSet(pattern, cvScalar(255, 255, 255), 0);
 	cvShowImage("Pattern window", pattern); // Show our image inside it.
 	waitKey(0);
@@ -36,6 +36,8 @@ int capture() {
 		if(capturePattern(i, cap)<0)
 			break;
 	}
+	destroyWindow("Pattern window");
+	destroyWindow("MyVideo");
 	return 0;
 }
 

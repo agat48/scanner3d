@@ -5,8 +5,9 @@
 
 #define PI 22/7
 
-extern int WIDTH;
-extern int HEIGHT;
+
+extern int C_WIDTH;
+extern int C_HEIGHT;
 
 
 extern double alpha;

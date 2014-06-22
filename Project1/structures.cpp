@@ -3,8 +3,8 @@
 #include "calculationMath.hpp"
 #include <iostream>
 
-extern int WIDTH;
-extern int HEIGHT;
+extern int C_WIDTH;
+extern int C_HEIGHT;
 
 extern double alpha;
 extern double beta;
@@ -80,16 +80,16 @@ double* calculateCoordinates(cameraRay camR, projectorPlane projPl, MatrixObj* Q
 //create matrix with rays - each for camera column and row
 cameraRay** generateRayCoords() {
 	cameraRay** rays;
-	rays = new cameraRay*[HEIGHT];
+	rays = new cameraRay*[C_HEIGHT];
 	double dx = tan(toRadians(alpha / 2));
 	double dy = tan(toRadians(beta / 2));
 
-	for (int i = 0; i < HEIGHT; i++) {
-		rays[i] = new cameraRay[WIDTH];
+	for (int i = 0; i < C_HEIGHT; i++) {
+		rays[i] = new cameraRay[C_WIDTH];
 	}
-	for (int i = 0; i < HEIGHT; i++) {
-		for (int j = 0; j < WIDTH; j++) {
-			rays[i][j].setParams((double)dx*((2 * j) / (WIDTH - 1) - 1), (double)dy*((2 * i) / (HEIGHT - 1) - 1));
+	for (int i = 0; i < C_HEIGHT; i++) {
+		for (int j = 0; j < C_WIDTH; j++) {
+			rays[i][j].setParams((double)dx*((2 * j) / (C_WIDTH - 1) - 1), (double)dy*((2 * i) / (C_HEIGHT - 1) - 1));
 			rays[i][j].setCoords(j, i);
 		}
 	}
@@ -99,9 +99,9 @@ cameraRay** generateRayCoords() {
 projectorPlane* generatePlaneCoords() {
 	projectorPlane* planes;
 	double c = tan(toRadians(gamma / 2));
-	planes = new projectorPlane[WIDTH];
-	for (int i = 0; i < WIDTH; i++) {
-		planes[i].setParams((double)i / (WIDTH - 1) - 1, 0, c, 0);
+	planes = new projectorPlane[C_WIDTH];
+	for (int i = 0; i < C_WIDTH; i++) {
+		planes[i].setParams((double)i / (C_WIDTH - 1) - 1, 0, c, 0);
 	}
 	return planes;
 }
