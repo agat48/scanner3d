@@ -28,6 +28,7 @@ int capture() {
 	pattern = cvCreateImage(cvSize(C_WIDTH, C_HEIGHT), IPL_DEPTH_8U, 3); //generatePatternGray(i, C_WIDTH, HEIGHT, gr);
 	cvSet(pattern, cvScalar(255, 255, 255), 0);
 	cvShowImage("Pattern window", pattern); // Show our image inside it.
+	capturePattern(0, cap);
 	waitKey(0);
 	for (int i = 1; i < 12; i++)
 	{
@@ -64,18 +65,5 @@ int capturePattern(int index, VideoCapture cap) {
 
 
 //	imwrite(filename, frame);
-
-
-/*	cvtColor(frame, img2, CV_BGR2Lab, 0);
-	imshow("Display window", img2);
-
-	Mat* imgBin = binarizeChannels(img2);
-	/*		waitKey(0);
-	imshow("Display window", imgBin[0]);
-	waitKey(0);
-	imshow("Display window", imgBin[1]);
-	waitKey(0);
-	imshow("Display window", imgBin[2]);
-	waitKey(0); */
 	return 0;
 }

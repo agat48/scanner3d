@@ -56,18 +56,8 @@ double yaw=-20; // skrêt w lewo
 
 int main(int argc, char** argv)
 {
-//	capture();
+	capture();
 	//
-/*	MatrixObj mat(4, 4);
-	mat.eye();
-	mat.writeMatrix();
-	RMatrix rmatr;
-	rmatr.writeMatrix();
-	RMatrix rmatr2(R_ROLL, roll);
-	rmatr2.writeMatrix();
-	MatrixObj multip = rmatr.multiplMatrix(rmatr2);
-	multip.writeMatrix(); */
-	//createROI();
 	cout << "generateRayCoords" << endl;
 	cameraRay** rays = generateRayCoords();
 	cout << "generatePlaneCoords" << endl;
@@ -89,18 +79,16 @@ int main(int argc, char** argv)
 	int colNum;
 	gray_temp = assignedValues[100][300];
 	cout << gray_temp.values[0] << gray_temp.values[1] << gray_temp.values[2] << gray_temp.values[3] << gray_temp.values[4] << gray_temp.values[5] << gray_temp.values[6] << gray_temp.values[7] << gray_temp.values[8] << gray_temp.values[9] << gray_temp.values[10] << endl;
-	cout << "calculateQ" << endl;
-	MatrixObj* Q = calculateQ();
 	cout << "calculateCoordinates" << endl;
 	ofstream file;
-	file.open("data.pcd");
-	file << "WIDTH " << C_WIDTH << " HEIGHT " << C_HEIGHT << endl;
+	file.open("data.pcd",ofstream::trunc);
+	file << "WIDTH " << ROI_RIGHT - ROI_LEFT << " HEIGHT " << ROI_BOTTOM - ROI_TOP << endl;
 	for (int i = ROI_TOP; i < ROI_BOTTOM; i++) {
 		for (int j = ROI_LEFT; j < ROI_RIGHT; j++) {
 			gray_temp = assignedValues[i][j];
 			colNum = findColumn(gray_temp);
 			if (colNum >= 0) {
-				coordVals[i][j] = calculateCoordinates(rays[i][j], planes[colNum],Q);
+				coordVals[i][j] = calculateCoordinates(rays[i][j], planes[colNum]);
 			}
 			else {
 				coordVals[i][j][0] = j;
@@ -112,8 +100,7 @@ int main(int argc, char** argv)
 		file << endl;
 	}
 	cout << coordVals[100][300][0] << " " << coordVals[100][300][1] << " " << coordVals[100][300][2] << " " << endl;
-	waitKey(0);
-	system("pause");
+//	system("pause");
 
 	//free memory
 	cout << "free memory" << endl;

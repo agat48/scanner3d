@@ -30,7 +30,7 @@ public:
 	int getIndex();
 };
 
-double* calculateCoordinates(cameraRay camR, projectorPlane projPl, MatrixObj* Q);
+double* calculateCoordinates(cameraRay camR, projectorPlane projPl);
 
 cameraRay** generateRayCoords();
 projectorPlane* generatePlaneCoords();

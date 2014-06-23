@@ -66,10 +66,10 @@ void projectorPlane::setIndex(int i) {
 int projectorPlane::getIndex() {
 	return index;
 }
-double* calculateCoordinates(cameraRay camR, projectorPlane projPl, MatrixObj* Q) {
+double* calculateCoordinates(cameraRay camR, projectorPlane projPl) {
 
 	double* coords=new double[3];
-	double* planeCoords = switchCoordsToLocal(projPl, Q);
+	double* planeCoords = projPl.getParams();
 	coords[0] = camR.getCoords()[0];
 	coords[1] = camR.getCoords()[1];
 	coords[2] = -planeCoords[3] / (planeCoords[0] * camR.getParams()[0] + planeCoords[1] * camR.getParams()[1] + planeCoords[2]);
@@ -97,11 +97,15 @@ cameraRay** generateRayCoords() {
 }
 //create table with planes - each for projector column
 projectorPlane* generatePlaneCoords() {
+	MatrixObj* Q = calculateQ();
 	projectorPlane* planes;
+	double* tempcoords;
 	double c = tan(toRadians(gamma / 2));
 	planes = new projectorPlane[C_WIDTH];
 	for (int i = 0; i < C_WIDTH; i++) {
 		planes[i].setParams((double)i / (C_WIDTH - 1) - 1.0, 0, c, 0);
+		tempcoords=switchCoordsToLocal(planes[i], Q);
+		planes[i].setParams(tempcoords[0], tempcoords[1], tempcoords[2], tempcoords[3]);
 	}
 	return planes;
 }
