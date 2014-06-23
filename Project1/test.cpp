@@ -56,7 +56,7 @@ double yaw=-20; // skrêt w lewo
 
 int main(int argc, char** argv)
 {
-	capture();
+//	capture();
 	//
 /*	MatrixObj mat(4, 4);
 	mat.eye();
@@ -89,9 +89,9 @@ int main(int argc, char** argv)
 	int colNum;
 	gray_temp = assignedValues[100][300];
 	cout << gray_temp.values[0] << gray_temp.values[1] << gray_temp.values[2] << gray_temp.values[3] << gray_temp.values[4] << gray_temp.values[5] << gray_temp.values[6] << gray_temp.values[7] << gray_temp.values[8] << gray_temp.values[9] << gray_temp.values[10] << endl;
-	cout << "calculateCoordinates" << endl;
+	cout << "calculateQ" << endl;
 	MatrixObj* Q = calculateQ();
-//	PointCloud<PointXYZ>::Ptr cloud((new PointCloud<PointXYZ>));
+	cout << "calculateCoordinates" << endl;
 	ofstream file;
 	file.open("data.pcd");
 	file << "WIDTH " << C_WIDTH << " HEIGHT " << C_HEIGHT << endl;
@@ -105,7 +105,7 @@ int main(int argc, char** argv)
 			else {
 				coordVals[i][j][0] = j;
 				coordVals[i][j][1] = i;
-				coordVals[i][j][2] = 0; //?
+				coordVals[i][j][2] = -2000; //?
 			}
 			file << coordVals[i][j][0] << " " << coordVals[i][j][1] << " " << coordVals[i][j][2] << ";";
 		}

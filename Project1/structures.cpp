@@ -89,7 +89,7 @@ cameraRay** generateRayCoords() {
 	}
 	for (int i = 0; i < C_HEIGHT; i++) {
 		for (int j = 0; j < C_WIDTH; j++) {
-			rays[i][j].setParams((double)dx*((2 * j) / (C_WIDTH - 1) - 1), (double)dy*((2 * i) / (C_HEIGHT - 1) - 1));
+			rays[i][j].setParams(dx*(((double)(2 * j) / (C_WIDTH - 1)) - 1.0), dy*(((double)(2 * i) / (C_HEIGHT - 1)) - 1.0));
 			rays[i][j].setCoords(j, i);
 		}
 	}
@@ -101,7 +101,7 @@ projectorPlane* generatePlaneCoords() {
 	double c = tan(toRadians(gamma / 2));
 	planes = new projectorPlane[C_WIDTH];
 	for (int i = 0; i < C_WIDTH; i++) {
-		planes[i].setParams((double)i / (C_WIDTH - 1) - 1, 0, c, 0);
+		planes[i].setParams((double)i / (C_WIDTH - 1) - 1.0, 0, c, 0);
 	}
 	return planes;
 }
