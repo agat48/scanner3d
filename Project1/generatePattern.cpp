@@ -147,20 +147,21 @@ GRAY_STR** assignToPlane(int numberOfPhotos) {
 	Mat z;
 	uchar temp;
 	int val;
-	namedWindow("disp", WINDOW_AUTOSIZE);
+	imgBin = NULL;
+//	namedWindow("disp", WINDOW_AUTOSIZE);
 	for (int k = 0; k < numberOfPhotos; k++)
 	{
 		sprintf(filename, "./images/captured/cap%d.jpg", k+1);
 		img = imread(filename, CV_LOAD_IMAGE_COLOR);
-		imgBin = binarizeChannels(img,roi);
-		imshow("disp", imgBin[0]);
-		waitKey(0);
-		imshow("disp", imgBin[1]);
-		waitKey(0);
-		imshow("disp", imgBin[2]);
-		waitKey(0);
-		imshow("disp", img);
-		waitKey(0);
+		imgBin = binarizeChannels(img, roi);
+//		imshow("disp", img);
+//		waitKey(0);
+//		imshow("disp", imgBin[0]);
+//		waitKey(0);
+//		imshow("disp", imgBin[1]);
+//		waitKey(0);
+//		imshow("disp", imgBin[2]);
+//		waitKey(0);
 		//check if pixel is red/green/blue/other
 		for (int i = 0; i < img.rows; i++) {
 			for (int j = 0; j < img.cols; j++) {
@@ -185,7 +186,7 @@ GRAY_STR** assignToPlane(int numberOfPhotos) {
 			}
 		}
 	}
-	destroyWindow("disp");
+//	destroyWindow("disp");
 	delete[]imgBin;
 	return tab;
 }
@@ -202,16 +203,12 @@ Mat createROI() {
 	Mat img2;
 	Mat imgBin;
 	Mat imgTemp;
-/*	RNG rng(12345);
-	vector<vector<Point>> contours;
-	vector<Vec4i> hierarchy; */
 	sprintf(filename, "./images/captured/cap%d.jpg", 0);
 	img = imread(filename, 1);
 	cvtColor(img, img2, CV_BGR2Lab, 0); 
 
 	inRange(img2, Scalar(50 * 255 / 100, -127 + 128, -127 + 128), Scalar(100 * 255 / 100, 127 + 128, 127 + 128), imgTemp);
 	morphologyEx(imgTemp, imgBin, MORPH_CLOSE, getStructuringElement(MORPH_RECT, Size(5, 5)));
-	//morphologyEx(imgTemp, imgBin, MORPH_OPEN, getStructuringElement(MORPH_RECT, Size(5, 5)));
 	int ROIleft, ROItop, ROIright, ROIbottom;
 	ROIleft = imgBin.cols;
 	ROItop = imgBin.rows;
@@ -242,37 +239,14 @@ Mat createROI() {
 	ROI_RIGHT = ROIright;
 	ROI_BOTTOM = ROIbottom;
 	cout << ROIleft << " " << ROItop << " " << ROIright << " " << ROIbottom << endl;
-/*	Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
-	rectangle(imgBin, Point(ROIleft, ROItop), Point(ROIbottom,ROIright), color, 2, 8, 0);
-	Mat imgFinal;
-	imgBin(Rect(ROIleft, ROItop, ROIright - ROIleft, ROIbottom - ROItop)).copyTo(imgFinal);
-	cout << imgFinal.cols << endl;
-/*	findContours(imgBin, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
-
-	vector<vector<Point> > contours_poly(contours.size());
-	vector<Rect> boundRect(contours.size());
-	vector<Point2f>center(contours.size());
-	vector<float>radius(contours.size());
-	cout << contours.size() << endl;
-	for (int i = 0; i < contours.size(); i++)
-	{
-		approxPolyDP(Mat(contours[i]), contours_poly[i], 3, true);
-		boundRect[i] = boundingRect(Mat(contours_poly[i]));
-	}
-	Mat drawing = Mat::zeros(imgBin.size(), CV_8UC3);
-	for (int i = 0; i< contours.size(); i++)
-	{
-		Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
-		rectangle(drawing, boundRect[i].tl(), boundRect[i].br(), color, 2, 8, 0);
-	}
 
 	/// Show in a window */
 	Mat drawing = Mat::zeros(imgBin.size(), CV_8UC3);
 	namedWindow("ROI", CV_WINDOW_AUTOSIZE);
 	imshow("ROI", imgTemp);
-	waitKey(0);
+	waitKey(1000);
 	imshow("ROI", imgBin);
-	waitKey(0);
+	waitKey(1000);
 	destroyWindow("ROI");
 	return imgBin;
 }

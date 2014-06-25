@@ -23,17 +23,18 @@ int capture() {
 	cap.set(CV_CAP_PROP_FRAME_WIDTH, C_WIDTH);
 	cap.set(CV_CAP_PROP_FRAME_HEIGHT, C_HEIGHT);
 	namedWindow("MyVideo", CV_WINDOW_AUTOSIZE); //create a window called "MyVideo
-	checkAndCreateDir("./images", "/images/captured");
+	checkAndCreateDir("./images", "./images/captured");
 
 	pattern = cvCreateImage(cvSize(C_WIDTH, C_HEIGHT), IPL_DEPTH_8U, 3); //generatePatternGray(i, C_WIDTH, HEIGHT, gr);
 	cvSet(pattern, cvScalar(255, 255, 255), 0);
 	cvShowImage("Pattern window", pattern); // Show our image inside it.
-	capturePattern(0, cap);
 	waitKey(0);
+	capturePattern(0, cap);
+	waitKey(2000);
 	for (int i = 1; i < 12; i++)
 	{
 		showPattern(i, gr, pattern);
-		waitKey(0);
+		waitKey(2000);
 		if(capturePattern(i, cap)<0)
 			break;
 	}
@@ -64,6 +65,6 @@ int capturePattern(int index, VideoCapture cap) {
 	sprintf(filename, "./images/captured/cap%d.jpg", index);
 
 
-//	imwrite(filename, frame);
+	imwrite(filename, frame);
 	return 0;
 }
